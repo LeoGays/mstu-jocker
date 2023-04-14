@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: Jocker Server
+  description: Jocker Server
+  version: 1.0.0
+servers:
+  - url: 'https'
+tags:
+  - name: "Jocker"
+paths:
+  /jocks:
+    post:
+      tags:
+        - "Jocker"
+      operationId: CreateJock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JockRequestBody"
+      responses:
+        201:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jock"
+        400:
+          $ref: "#/components/responses/Error"
+    get:
+      tags:
+        - "Jocker"
+      operationId: GetJocks
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JockList"
+        400:
+          $ref: "#/components/responses/Error"
+components:
+  schemas:
+    JockRequestBody:
+      type: object
+      required:
+        - name
+        - content
+      properties:
+        name:
+          type: string
+          minLength: 5
+        content:
+          type: string
+          minLength: 5
+    JockList:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Jock"
+    Jock:
+      type: object
+      required:
+        - id
+        - name
+        - content
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        content:
+          type: string
+    JockResponseBody:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+
+  
